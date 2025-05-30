@@ -1,27 +1,49 @@
 package juego;
+
 import java.awt.*;
 
-import entorno.*;
+import entorno.Entorno;
+import entorno.Herramientas;
+
 public class Obstaculo {
-	
-	double x,y;
-	double ancho = 20;
-	double alto = 25;
-	
-	public Obstaculo(double x, double y) {
+
+	double x, y;
+	double ancho = 30;
+	double alto = 30;
+	Image imagen;
+
+
+	public Obstaculo(double x, double y, double ancho, double alto) {
 		this.x = x;
 		this.y = y;
-	}
-	
-	public void dibujar (Entorno entorno) {
-		entorno.dibujarRectangulo(x, y, ancho, alto, 0, Color.BLUE );
+		this.ancho = ancho;
+		this.alto = alto;
+
+		this.imagen = Herramientas.cargarImagen("sprites/roca.png");
 	}
 
-	public boolean colision(Jugador jugador) {
-		return jugador.x + jugador.ancho >= this.x - 1 && jugador.y + jugador.alto >= this.y + 1 &&
-				jugador.x <= this.x + this.ancho + 1 && jugador.y <= this.y + this.alto + 3;
-		}
+
+	public void dibujar(Entorno entorno) {
+		entorno.dibujarImagen(imagen, x, y, 0, 0.5);
 	}
 
+	public boolean colision(Jugador jugador, double nuevaX, double nuevaY) {
+		//Parte Izquierda.
+		return nuevaX + jugador.ancho > this.x - this.ancho / 2 &&
+				//Parte Derecha.
+				nuevaX - jugador.ancho < this.x + this.ancho / 2 &&
+				// Parte Arriba.
+				nuevaY + jugador.alto > this.y - this.alto &&
+				// Parte Abajo.
+				nuevaY - jugador.alto / 2 < this.y + this.alto / 2;
+	}
+
+	public boolean spawnEnSiMismos(Obstaculo otraRoca) {
+		return x + this.ancho >= otraRoca.x - otraRoca.ancho &&
+				y + this.alto >= otraRoca.y - otraRoca.alto &&
+				x - this.ancho <= otraRoca.x + otraRoca.ancho &&
+				y - this.alto <= otraRoca.y + otraRoca.alto;
+	}
+}
 
 
