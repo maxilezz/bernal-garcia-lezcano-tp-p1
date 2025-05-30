@@ -18,6 +18,7 @@ public class Juego extends InterfaceJuego {
 	public LinkedList<Enemigos> murcielagos;
 	public int murcielagosEliminados;
 	public double murcielagosVelocidad;
+	public int ultimoItemGeneradoEn;
 
 	public Obstaculo[] roca;
 
@@ -27,6 +28,8 @@ public class Juego extends InterfaceJuego {
 
 	public boolean gameOver;
 	public String hechizoSeleccionado;
+	
+	public ArrayList<Item> itemVida;
 
 	Juego() {
 
@@ -91,12 +94,19 @@ public class Juego extends InterfaceJuego {
 		hechizos.add(new Hechizo("SueloSanto", 750, 300, 50, 2000, 50 , Herramientas.cargarImagen("sprites/suelo.png")));
 		
 		this.mago = new Jugador(300, 300, 3, 100, 100, hechizos);
+		
+		
 		this.murcielagos = new LinkedList<>();
-
 		this.murcielagosEliminados = 0;
+		this.ultimoItemGeneradoEn = 0;
 		this.murcielagosVelocidad = 0.7;
 		this.gameOver = false;
+		
+		
 
+		this.itemVida = new ArrayList<>();
+		
+		
 		roca = new Obstaculo[6];
 		Random random = new Random();
 
@@ -151,6 +161,8 @@ public class Juego extends InterfaceJuego {
 			enemy.dibujar(entorno);
 			enemy.moverHaciaJugador(mago);
 		}
+		
+		
 
 		for (int i = 0; i < murcielagos.size(); i++) {
 			Enemigos enemy = murcielagos.get(i);
@@ -204,9 +216,28 @@ public class Juego extends InterfaceJuego {
 						murcielagosEliminados++;
 						generarMurcielago(random);
 					}
+					
+					if (murcielagosEliminados % 10 == 0 && murcielagosEliminados != ultimoItemGeneradoEn) {
+		                itemVida.add(new Item(murcielago.getX(), murcielago.getY(), 30, 30, 0));
+		                ultimoItemGeneradoEn = murcielagosEliminados; // Actualiza el último múltiplo
+		            }
+		
 				}
+				
+			
 			}
-		}
+			
+			for(Item item : itemVida) {
+				
+				item.dibujarItemVida(entorno);
+				break;
+			}
+				
+			}
+		
+			
+		
+		
 
 		// Dibujar botones de hechizos y verificar selección
         for (Hechizo hechizo : hechizos) {
@@ -224,6 +255,7 @@ public class Juego extends InterfaceJuego {
 			if (clickHechizo) {
 				hechizoSeleccionado = hechizo.getNombre();
 			}
+       
 			
         }
 

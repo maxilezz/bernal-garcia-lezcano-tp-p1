@@ -1,6 +1,7 @@
 package juego;
 import entorno.Entorno;
 import java.awt.Color;
+import java.awt.Image;
 
 public class Item{
 	
@@ -8,20 +9,25 @@ public class Item{
 	private double y;
 	private double ancho;
 	private double alto;
-	private int vida;
-	private int mana;
+	private int recarga;
+	Image imagenVida;
+	Image imagenMana;
 	
-	public Item(int x, int y, int ancho, int alto, int vida, int mana) {
+	public Item(double x, double y, double ancho, double alto, int recarga) {
 		
 		this.x = x;
 		this.y = y;
 		this.ancho = ancho;
 		this.alto = alto;
-		this.vida = vida;
-		this.mana = mana;
+		this.recarga = recarga;
 	}
 
-	public void dibujarItem(Entorno entorno) {
-		entorno.dibujarTriangulo(x, y, 0, 0, alto, Color.WHITE);
+
+	public void dibujarItemVida(Entorno entorno) {
+		entorno.dibujarRectangulo(x, y, ancho, alto, 0, Color.WHITE);
+	}
+	
+	public void dibujarItemMana(Entorno entorno){
+		entorno.dibujarRectangulo(x, y, ancho, alto, 0, Color.WHITE);
 	}
 }
