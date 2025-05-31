@@ -27,14 +27,20 @@ public class Interfaz {
         entorno.dibujarImagen(imagen, x, y, 0, escala);
     }
 
-    public void dibujarBoton(Entorno entorno, Image imagenHechizo, double posicionX, double posicionY, boolean estaClickeado, int costoMana) {
-        //entorno.dibujarRectangulo(posicionX, posicionY, 100, 100, 0, Color.GRAY);
+    public void dibujarBoton(Entorno entorno, Image imagenHechizo, double posicionX, double posicionY, boolean estaClickeado, boolean estaInactivo, int costoMana) {
+
         if (estaClickeado) {
             entorno.dibujarRectangulo(posicionX, posicionY, 94, 94, 0, Color.YELLOW);
         }
+
         entorno.dibujarImagen(imagenHechizo, posicionX, posicionY, 0, 0.35);
         entorno.cambiarFont("Times New Roman", 10, Color.WHITE);
         entorno.escribirTexto(String.valueOf(costoMana), posicionX + 30, posicionY - 30);
+
+        if (estaInactivo) {
+            Color grisTranslucido = new Color(0, 0, 0, 100);
+            entorno.dibujarRectangulo(posicionX, posicionY, 94, 94, 0, grisTranslucido);
+        }
     }
 
     public void dibujarBarraVida(Entorno entorno, int vidaActual, int vidaMaxima, Image imagenVida) {

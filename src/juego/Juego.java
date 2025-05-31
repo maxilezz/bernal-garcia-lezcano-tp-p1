@@ -1,7 +1,8 @@
 package juego;
-import java.awt.Color;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Objects;
 import java.util.Random;
 
 import entorno.*;
@@ -85,13 +86,15 @@ public class Juego extends InterfaceJuego {
 
 	private void inicializarJuego() {
 
+		this.gameOver = false;
+
 		this.menu = new Interfaz(750, 400, 0, 0, 0.3);
 
 		this.hechizos = new ArrayList<>();
 		hechizos.add(new Hechizo("HechizoBase", 650, 200, 40, 500, 0,  Herramientas.cargarImagen("sprites/water.png")));
 		hechizos.add(new Hechizo("HechizoIncendiario", 750, 200, 70, 700, 25,  Herramientas.cargarImagen("sprites/fire.png")));
-		hechizos.add(new Hechizo("EnemigosPesados", 650, 300, 50, 2000, 10 , Herramientas.cargarImagen("sprites/timefreeze.png")));
-		hechizos.add(new Hechizo("SueloSanto", 750, 300, 50, 2000, 50 , Herramientas.cargarImagen("sprites/suelo.png")));
+		hechizos.add(new Hechizo("EnemigosPesados", 650, 300, 600, 1000, 10 , Herramientas.cargarImagen("sprites/timefreeze.png")));
+		hechizos.add(new Hechizo("SueloSanto", 750, 300, 200, 6000, 30 , Herramientas.cargarImagen("sprites/suelo.png")));
 		
 		this.mago = new Jugador(300, 300, 3, 100, 100, hechizos);
 		
@@ -99,14 +102,9 @@ public class Juego extends InterfaceJuego {
 		this.murcielagos = new LinkedList<>();
 		this.murcielagosEliminados = 0;
 		this.ultimoItemGeneradoEn = 0;
-		this.murcielagosVelocidad = 0.7;
-		this.gameOver = false;
-		
-		
-
+		this.murcielagosVelocidad = 0.6;
 		this.itemVida = new ArrayList<>();
-		
-		
+
 		roca = new Obstaculo[6];
 		Random random = new Random();
 
@@ -161,8 +159,6 @@ public class Juego extends InterfaceJuego {
 			enemy.dibujar(entorno);
 			enemy.moverHaciaJugador(mago);
 		}
-		
-		
 
 		for (int i = 0; i < murcielagos.size(); i++) {
 			Enemigos enemy = murcielagos.get(i);
@@ -207,61 +203,72 @@ public class Juego extends InterfaceJuego {
 				}
 			}
 
+			if (hechizoSeleccionado != null && hechizoSeleccionado.equals(hechizo.getNombre())) {
+				// Si el hechizo está seleccionado, dibujar su área de efecto
+				hechizo.dibujarAreaEfecto(entorno);
+			}
+
 			if (hechizo.estaActivo()) {
 				hechizo.actualizar(entorno);
+				//Al ser un linked list, no se puede eliminar de principio a fin, ya que se puede romper el bucle.
 				for (int i = murcielagos.size() - 1; i >= 0; i--) {
 					Enemigos murcielago = murcielagos.get(i);
-					if (murcielago.colisionHechizoMurcielago(hechizo)) {
-						murcielagos.remove(i);
-						murcielagosEliminados++;
-						generarMurcielago(random);
+
+					if (Objects.equals(hechizo.getNombre(), "SueloSanto") && murcielago.colisionHechizoMurcielago(hechizo)) {
+						// Calcula la dirección desde el centro del hechizo hacia el murciélago
+						double dx = murcielago.x - hechizo.getPosicionX();
+						double dy = murcielago.y - hechizo.getPosicionY();
+
+						// Normaliza el vector
+						double distancia = Math.sqrt(dx * dx + dy * dy);
+						if (distancia > 0) {
+							dx = dx / distancia;
+							dy = dy / distancia;
+
+							// Empuja al murciélago hacia afuera
+							murcielago.x += dx * murcielago.velocidad * 2;
+							murcielago.y += dy * murcielago.velocidad * 2;
+						}
 					}
-					
-					if (murcielagosEliminados % 10 == 0 && murcielagosEliminados != ultimoItemGeneradoEn) {
-		                itemVida.add(new Item(murcielago.getX(), murcielago.getY(), 30, 30, 0));
-		                ultimoItemGeneradoEn = murcielagosEliminados; // Actualiza el último múltiplo
-		            }
-		
+
+					if (murcielago.colisionHechizoMurcielago(hechizo)) {
+						if (hechizo.getNombre().equals("EnemigosPesados")) {
+							murcielago.velocidad = 0.1;
+						} else {
+							murcielagos.remove(i);
+							murcielagosEliminados++;
+							generarMurcielago(random);
+						}
+
+					}
+
 				}
-				
-			
 			}
-			
-			for(Item item : itemVida) {
-				
-				item.dibujarItemVida(entorno);
-				break;
-			}
-				
-			}
-		
-			
-		
-		
+		}
 
 		// Dibujar botones de hechizos y verificar selección
         for (Hechizo hechizo : hechizos) {
+			boolean sinMana = hechizo.getCostoMana() > mago.mana;
             menu.dibujarBoton(entorno, hechizo.imagenHechizo, hechizo.x, hechizo.y,
-                    hechizoSeleccionado != null && hechizoSeleccionado.equals(hechizo.getNombre()), hechizo.getCostoMana());
+                    hechizoSeleccionado != null && hechizoSeleccionado.equals(hechizo.getNombre()), sinMana, hechizo.getCostoMana());
 
 			// Este booleano lo que hace es confirma si el X y el Y del mouse estan dentro del cuadrado del hechizo.
             boolean clickHechizo = entorno.mouseX() > hechizo.x - 50 && entorno.mouseX() < hechizo.x + 50 &&
 					entorno.mouseY() > hechizo.y - 50 && entorno.mouseY() < hechizo.y + 50 &&
 					entorno.sePresionoBoton(entorno.BOTON_IZQUIERDO);
 
-			if(mago.mana < hechizo.getCostoMana()){	
+			if(sinMana){
 				clickHechizo = false;
-					}
+			}
+
 			if (clickHechizo) {
 				hechizoSeleccionado = hechizo.getNombre();
 			}
-       
 			
         }
 
 
 		mago.dibujar(entorno);
-		
 
 		if (entorno.estaPresionada('a')) {
 			double nuevaX = mago.x - mago.velocidad;
@@ -291,10 +298,9 @@ public class Juego extends InterfaceJuego {
 			}
 		}
 
-		if (mago.vida == 0 || murcielagosEliminados == 50) {
+		if (mago.vida <= 0 || murcielagosEliminados >= 50) {
 			gameOver = true;
 		}
-		
 
 	}
 

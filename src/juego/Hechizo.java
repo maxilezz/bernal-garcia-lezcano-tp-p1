@@ -37,16 +37,23 @@ public class Hechizo {
 	}
 
 	public void dibujarAgua(Entorno entorno, double x, double y) {
-		entorno.dibujarCirculo(x, y, diametro, Color.BLUE);
+		Image spellAgua = Herramientas.cargarImagen("sprites/spellagua.png");
+		entorno.dibujarImagen(spellAgua,x, y, 0, 0.25);
 
 	}
 
 	public void dibujarFuego(Entorno entorno, double x, double y) {
-		entorno.dibujarCirculo(x, y, diametro, Color.RED);
+		Image spellFuego = Herramientas.cargarImagen("sprites/spellfuego.png");
+		entorno.dibujarImagen(spellFuego, x, y, 0, 0.50);
+	}
+
+	public void relentizarEnemigos(Enemigos enemigos){
+		enemigos.velocidad *= 0.5;
 	}
 
 	public void dibujarHexa(Entorno entorno, double x, double y) {
-		entorno.dibujarCirculo(x, y, diametro, Color.magenta);
+		Image hexa = Herramientas.cargarImagen("sprites/spellhexa.png");
+		entorno.dibujarImagen(hexa, x, y, 0, 0.85);
 	}
 
 	public void lanzar(double x, double y) {
@@ -71,6 +78,8 @@ public class Hechizo {
 			dibujarAgua(entorno, posicionX, posicionY);
 		} else if (nombre.equals("HechizoIncendiario")) {
 			dibujarFuego(entorno, posicionX, posicionY);
+		} else if (nombre.equals("SueloSanto")) {
+			dibujarHexa(entorno, posicionX, posicionY);
 		}
 	}
 
@@ -95,4 +104,15 @@ public class Hechizo {
 	}
 
 
+	public void dibujarAreaEfecto(Entorno entorno) {
+		double MouseX = entorno.mouseX();
+		double MouseY = entorno.mouseY();
+		if (nombre.equals("HechizoBase")) {
+			entorno.dibujarCirculo(MouseX, MouseY, diametro, Color.BLUE);
+		} else if (nombre.equals("HechizoIncendiario")) {
+			entorno.dibujarCirculo(MouseX, MouseY, diametro, Color.RED);
+		} else if (nombre.equals("SueloSanto")) {
+			entorno.dibujarCirculo(MouseX, MouseY, diametro, Color.MAGENTA);
+		}
+	}
 }
