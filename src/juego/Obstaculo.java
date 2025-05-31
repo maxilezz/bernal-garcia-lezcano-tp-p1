@@ -39,10 +39,10 @@ public class Obstaculo {
 	}
 
 	public boolean spawnEnSiMismos(Obstaculo otraRoca) {
-		return x + this.ancho >= otraRoca.x - otraRoca.ancho &&
-				y + this.alto >= otraRoca.y - otraRoca.alto &&
-				x - this.ancho <= otraRoca.x + otraRoca.ancho &&
-				y - this.alto <= otraRoca.y + otraRoca.alto;
+		return otraRoca.x + otraRoca.ancho > this.x - this.ancho &&
+				otraRoca.x - otraRoca.ancho < this.x + this.ancho &&
+				otraRoca.y + otraRoca.alto > this.y - this.alto &&
+				otraRoca.y - otraRoca.alto < this.y + this.alto;
 	}
 }
 

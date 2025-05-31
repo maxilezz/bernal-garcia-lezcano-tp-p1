@@ -83,6 +83,21 @@ public class Hechizo {
 		}
 	}
 
+	public void dibujarAreaEfecto(Entorno entorno) {
+		double MouseX = entorno.mouseX();
+		double MouseY = entorno.mouseY();
+		Image hechizoArea = Herramientas.cargarImagen("sprites/mira.png");
+		if (nombre.equals("HechizoBase")) {
+			entorno.dibujarImagen(hechizoArea, MouseX, MouseY, 0, 0.30);
+		} else if (nombre.equals("HechizoIncendiario")) {
+			entorno.dibujarImagen(hechizoArea, MouseX, MouseY, 0, 0.45);
+		} else if (nombre.equals("SueloSanto")) {
+			entorno.dibujarImagen(hechizoArea, MouseX, MouseY, 0, 0.75);
+		} else if (nombre.equals("HechizoRelentizador")) {
+			entorno.dibujarImagen(hechizoArea, MouseX, MouseY, 0, 0.50);
+		}
+	}
+
 	public String getNombre() {
 		return nombre;
 	}
@@ -104,15 +119,5 @@ public class Hechizo {
 	}
 
 
-	public void dibujarAreaEfecto(Entorno entorno) {
-		double MouseX = entorno.mouseX();
-		double MouseY = entorno.mouseY();
-		if (nombre.equals("HechizoBase")) {
-			entorno.dibujarCirculo(MouseX, MouseY, diametro, Color.BLUE);
-		} else if (nombre.equals("HechizoIncendiario")) {
-			entorno.dibujarCirculo(MouseX, MouseY, diametro, Color.RED);
-		} else if (nombre.equals("SueloSanto")) {
-			entorno.dibujarCirculo(MouseX, MouseY, diametro, Color.MAGENTA);
-		}
-	}
+
 }

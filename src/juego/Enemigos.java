@@ -88,12 +88,4 @@ public class Enemigos {
 			otroEnemigo.y += ajusteY;
 		}
 	}
-	
-	public double getX() {
-		return x;
-	}
-	
-	public double getY() {
-		return y;
-	}
 }

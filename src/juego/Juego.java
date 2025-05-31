@@ -29,8 +29,6 @@ public class Juego extends InterfaceJuego {
 
 	public boolean gameOver;
 	public String hechizoSeleccionado;
-	
-	public ArrayList<Item> itemVida;
 
 	Juego() {
 
@@ -40,7 +38,7 @@ public class Juego extends InterfaceJuego {
 		inicializarJuego();
 
 	}
-	
+
 	boolean verificarColisionRoca(double nuevaX, double nuevaY) {
 		for (Obstaculo rock : roca) {
 			if (rock.colision(mago, nuevaX, nuevaY)) {
@@ -91,19 +89,18 @@ public class Juego extends InterfaceJuego {
 		this.menu = new Interfaz(750, 400, 0, 0, 0.3);
 
 		this.hechizos = new ArrayList<>();
-		hechizos.add(new Hechizo("HechizoBase", 650, 200, 40, 500, 0,  Herramientas.cargarImagen("sprites/water.png")));
-		hechizos.add(new Hechizo("HechizoIncendiario", 750, 200, 70, 700, 25,  Herramientas.cargarImagen("sprites/fire.png")));
-		hechizos.add(new Hechizo("EnemigosPesados", 650, 300, 600, 1000, 10 , Herramientas.cargarImagen("sprites/timefreeze.png")));
-		hechizos.add(new Hechizo("SueloSanto", 750, 300, 200, 6000, 30 , Herramientas.cargarImagen("sprites/suelo.png")));
-		
+		hechizos.add(new Hechizo("HechizoBase", 650, 225, 40, 500, 0,  Herramientas.cargarImagen("sprites/water.png")));
+		hechizos.add(new Hechizo("HechizoIncendiario", 750, 225, 70, 700, 25,  Herramientas.cargarImagen("sprites/fire.png")));
+		hechizos.add(new Hechizo("EnemigosPesados", 650, 325, 600, 1000, 10 , Herramientas.cargarImagen("sprites/timefreeze.png")));
+		hechizos.add(new Hechizo("SueloSanto", 750, 325, 200, 6000, 30 , Herramientas.cargarImagen("sprites/suelo.png")));
+
 		this.mago = new Jugador(300, 300, 3, 100, 100, hechizos);
-		
-		
+
+
 		this.murcielagos = new LinkedList<>();
 		this.murcielagosEliminados = 0;
 		this.ultimoItemGeneradoEn = 0;
 		this.murcielagosVelocidad = 0.6;
-		this.itemVida = new ArrayList<>();
 
 		roca = new Obstaculo[6];
 		Random random = new Random();
@@ -135,7 +132,7 @@ public class Juego extends InterfaceJuego {
 	public void tick() {
 
 		// Le da tiempo para que todo lo del entorno cargue.
-		if (entorno.numeroDeTick() < 50) {
+		if (entorno.numeroDeTick() < 100) {
 			return;
 		}
 
@@ -174,19 +171,11 @@ public class Juego extends InterfaceJuego {
 
 			if (enemy.colisionMagoMurcielago(mago)) {
 				murcielagos.remove(i);
-				murcielagosEliminados++;
 				mago.vida = mago.vida - 10;
 
 				generarMurcielago(random);
 			}
 		}
-
-		menu.dibujar(entorno);
-		menu.dibujarBarraVida(entorno, mago.vida, 5, Herramientas.cargarImagen("sprites/vida.png"));
-		menu.dibujarBarraMana(entorno, mago.mana, 25, Herramientas.cargarImagen("sprites/energia.png"));
-		entorno.cambiarFont("Times New Roman", 30, Color.WHITE);
-		entorno.escribirTexto("x " + murcielagosEliminados, 700, 25);
-
 
 		// Verificar clicks en los botones de hechizos
 		for (Hechizo hechizo : hechizos) {
@@ -245,6 +234,14 @@ public class Juego extends InterfaceJuego {
 				}
 			}
 		}
+
+		menu.dibujar(entorno);
+		menu.dibujarBarraVida(entorno, mago.vida, 5, Herramientas.cargarImagen("sprites/vida.png"));
+		menu.dibujarBarraMana(entorno, mago.mana, 25, Herramientas.cargarImagen("sprites/energia.png"));
+		entorno.cambiarFont("Times New Roman", 30, Color.WHITE);
+		entorno.escribirTexto("x " + murcielagosEliminados, 700, 25);
+		entorno.dibujarImagen(Herramientas.cargarImagen("sprites/logo.png"), 700, 475, 0, 0.2);
+
 
 		// Dibujar botones de hechizos y verificar selección
         for (Hechizo hechizo : hechizos) {

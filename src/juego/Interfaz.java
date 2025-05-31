@@ -54,6 +54,8 @@ public class Interfaz {
                 anchoTotal * porcentajeVida, altoVida, 0, Color.RED);
         // Imagen de vida
         entorno.dibujarImagen(imagenVida, x - 60, posY + 10, 0, 0.15);
+        entorno.cambiarFont("Times New Roman", 12, Color.WHITE);
+        entorno.escribirTexto(String.valueOf(vidaActual), x - 48, posY + 13);
     }
 
     public void dibujarBarraMana(Entorno entorno, int manaActual, int manaMaximo, Image imagenMana) {
@@ -67,6 +69,8 @@ public class Interfaz {
                 anchoTotal * porcentajeMana, altoMana, 0, Color.BLUE);
         // Imagen de maná
         entorno.dibujarImagen(imagenMana, x - 60, posY + 40 , 0, 0.15);
+        entorno.cambiarFont("Times New Roman", 12, Color.WHITE);
+        entorno.escribirTexto(String.valueOf(manaActual), x - 48, posY + 43);
     }
     
 }
