@@ -61,6 +61,15 @@ public class Jugador {
    		}
     }
 
+	boolean verificarColisionRoca(double nuevaX, double nuevaY, Obstaculo[] roca) {
+		for (Obstaculo rock : roca) {
+			if (rock.colision(this, nuevaX, nuevaY)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
     public double getX() {
 		return x;
 	}

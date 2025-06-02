@@ -3,6 +3,7 @@ import entorno.Entorno;
 import entorno.Herramientas;
 
 import java.awt.*;
+import java.util.Random;
 
 public class Enemigos {
 	public double x;
@@ -53,7 +54,7 @@ public class Enemigos {
 	}
 		
 	public boolean colisionMagoMurcielago(Jugador jugador) {
-			return jugador.x + jugador.ancho >= this.x - 1 && 
+			return jugador.x + jugador.ancho >= this.x - 1 &&
 					jugador.y + jugador.alto >= this.y + 1 &&
 					jugador.x <= this.x + this.ancho + 1 &&
 					jugador.y <= this.y + this.alto + 1;
@@ -88,4 +89,32 @@ public class Enemigos {
 			otroEnemigo.y += ajusteY;
 		}
 	}
+
+	public static Enemigos generarMurcielago() {
+		Random random = new Random();
+		int lado = random.nextInt(4);
+		double x = 0, y = 0;
+
+		switch (lado) {
+			case 0:
+				x = random.nextInt(750);
+				y = -50;
+				break;
+			case 1:
+				x = 750;
+				y = random.nextInt(600);
+				break;
+			case 2:
+				x = random.nextInt(750);
+				y = 650;
+				break;
+			case 3:
+				x = -50;
+				y = random.nextInt(600);
+				break;
+		}
+
+		return new Enemigos(x,y,0.7);
+	}
+
 }

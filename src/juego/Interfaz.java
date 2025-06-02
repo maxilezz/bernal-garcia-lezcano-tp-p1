@@ -50,7 +50,7 @@ public class Interfaz {
         double posY = 50;
 
         // Barra de vida actual
-        entorno.dibujarRectangulo(x - 82 - (anchoTotal * (1 - porcentajeVida)) / 2, posY + 10,
+        entorno.dibujarRectangulo(x - 83 - (anchoTotal * (1 - porcentajeVida)) / 2, posY + 10,
                 anchoTotal * porcentajeVida, altoVida, 0, Color.RED);
         // Imagen de vida
         entorno.dibujarImagen(imagenVida, x - 60, posY + 10, 0, 0.15);

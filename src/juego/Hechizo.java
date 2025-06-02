@@ -47,9 +47,6 @@ public class Hechizo {
 		entorno.dibujarImagen(spellFuego, x, y, 0, 0.50);
 	}
 
-	public void relentizarEnemigos(Enemigos enemigos){
-		enemigos.velocidad *= 0.5;
-	}
 
 	public void dibujarHexa(Entorno entorno, double x, double y) {
 		Image hexa = Herramientas.cargarImagen("sprites/spellhexa.png");
@@ -93,7 +90,7 @@ public class Hechizo {
 			entorno.dibujarImagen(hechizoArea, MouseX, MouseY, 0, 0.45);
 		} else if (nombre.equals("SueloSanto")) {
 			entorno.dibujarImagen(hechizoArea, MouseX, MouseY, 0, 0.75);
-		} else if (nombre.equals("HechizoRelentizador")) {
+		} else if (nombre.equals("EnemigosPesados")) {
 			entorno.dibujarImagen(hechizoArea, MouseX, MouseY, 0, 0.50);
 		}
 	}

@@ -28,13 +28,9 @@ public class Obstaculo {
 	}
 
 	public boolean colision(Jugador jugador, double nuevaX, double nuevaY) {
-		//Parte Izquierda.
 		return nuevaX + jugador.ancho > this.x - this.ancho / 2 &&
-				//Parte Derecha.
 				nuevaX - jugador.ancho < this.x + this.ancho / 2 &&
-				// Parte Arriba.
 				nuevaY + jugador.alto > this.y - this.alto &&
-				// Parte Abajo.
 				nuevaY - jugador.alto / 2 < this.y + this.alto / 2;
 	}
 
@@ -44,6 +40,7 @@ public class Obstaculo {
 				otraRoca.y + otraRoca.alto > this.y - this.alto &&
 				otraRoca.y - otraRoca.alto < this.y + this.alto;
 	}
+
 }
 
 
